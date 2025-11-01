@@ -1,6 +1,8 @@
 import streamlit as st
 import random
 
+
+
 # Initialisierung
 if "lives" not in st.session_state:
     st.session_state.lives = 30
@@ -45,43 +47,56 @@ if st.session_state.level == 1:
 # LEVEL 2: Hangman
 if st.session_state.level == 2:
     st.subheader("🧩 Level 2: Hangman")
-    word = "streamlit"
+
+    # Wortliste und Zufallsauswahl
+    word_list = ["streamlit", "python", "hangman", "spiel", "banane", "computer", "programmieren", "entwicklung", "daten", "algorithmus"]
+    if "word" not in st.session_state:
+        st.session_state.word = random.choice(word_list)
+
+    word = st.session_state.word
     st.write(f"🔠 Das Wort hat {len(word)} Buchstaben.")
+
+    # Initialisierung
     if "guesses" not in st.session_state:
         st.session_state.guesses = []
         st.session_state.wrong = 0
 
+    # Eingabe
     guess = st.text_input("Gib einen Buchstaben ein:", max_chars=1).lower()
+
+    # Verarbeitung
     if guess and guess not in st.session_state.guesses:
         st.session_state.guesses.append(guess)
         if guess not in word:
             st.session_state.wrong += 1
             st.session_state.lives -= 1
 
+    # Anzeige des Wortfortschritts
     display = [letter if letter in st.session_state.guesses else "_" for letter in word]
     st.write(" ".join(display))
     st.write(f"❌ Fehler: {st.session_state.wrong} / 6")
-    
-# Zeige falsche Buchstaben
-wrong_letters = [g for g in st.session_state.guesses if g not in word]
-if wrong_letters:
-    st.write("🚫 Falsche Buchstaben:", ", ".join(wrong_letters))
 
+    # Anzeige der falschen Buchstaben
+    wrong_letters = [g for g in st.session_state.guesses if g not in word]
+    if wrong_letters:
+        st.write("🚫 Falsche Buchstaben:", ", ".join(wrong_letters))
 
+    # Spielende
     if "_" not in display:
         st.success("🎉 Du hast das Wort erraten! Weiter zu Level 3")
         st.session_state.score += 20
         st.session_state.level = 3
         st.session_state.guesses = []
         st.session_state.wrong = 0
+        del st.session_state.word
     elif st.session_state.wrong >= 6:
         st.error("😢 Leider verloren. Weiter zu Level 3")
         st.session_state.level = 3
         st.session_state.guesses = []
         st.session_state.wrong = 0
+        del st.session_state.word
+
     st.stop()
-
-
 # LEVEL 3: Zahlenraten
 if st.session_state.level == 3:
     st.subheader("🔢 Level 3: Zahlenraten")
