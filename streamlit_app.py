@@ -61,6 +61,12 @@ if st.session_state.level == 2:
     display = [letter if letter in st.session_state.guesses else "_" for letter in word]
     st.write(" ".join(display))
     st.write(f"❌ Fehler: {st.session_state.wrong} / 6")
+    
+# Zeige falsche Buchstaben
+wrong_letters = [g for g in st.session_state.guesses if g not in word]
+if wrong_letters:
+    st.write("🚫 Falsche Buchstaben:", ", ".join(wrong_letters))
+
 
     if "_" not in display:
         st.success("🎉 Du hast das Wort erraten! Weiter zu Level 3")
