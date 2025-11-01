@@ -26,6 +26,7 @@ if st.session_state.game_over:
             del st.session_state[key]
     st.stop()
 
+
 # LEVEL 1: Slot Machine
 if st.session_state.level == 1:
     st.subheader("🎰 Level 1: Slot Machine")
@@ -38,13 +39,15 @@ if st.session_state.level == 1:
             st.session_state.score += 10
             st.session_state.level = 2
         else:
-            st.warning("Leider kein Gewinn. Versuch's nochmal!")
+            st.warning("Leider kein Gewinn. Du verlierst ein Leben.")
+            st.session_state.lives -= 1
     st.stop()
 
 # LEVEL 2: Hangman
 if st.session_state.level == 2:
     st.subheader("🧩 Level 2: Hangman")
     word = "streamlit"
+    st.write(f"🔠 Das Wort hat {len(word)} Buchstaben.")
     if "guesses" not in st.session_state:
         st.session_state.guesses = []
         st.session_state.wrong = 0
@@ -72,6 +75,7 @@ if st.session_state.level == 2:
         st.session_state.guesses = []
         st.session_state.wrong = 0
     st.stop()
+
 
 # LEVEL 3: Zahlenraten
 if st.session_state.level == 3:
