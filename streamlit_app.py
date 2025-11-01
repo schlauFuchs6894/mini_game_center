@@ -41,7 +41,6 @@ if st.session_state.level == 1:
         else:
             st.warning("Leider kein Gewinn. Du verlierst ein Leben.")
             st.session_state.lives -= 1
-    st.stop()
 
 # LEVEL 2: Hangman
 if st.session_state.level == 2:
